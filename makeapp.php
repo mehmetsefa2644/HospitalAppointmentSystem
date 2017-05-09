@@ -68,7 +68,7 @@
                         }
 
                         $sql = "SELECT PatID FROM patient WHERE UserName= '".$_SESSION['username']."' AND Password='".$_SESSION['password']."'";
-
+                        #echo $sql;
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0){
                                 $row = $result->fetch_assoc();
@@ -76,7 +76,7 @@
                         }
 
                         $sql = "SELECT DID FROM doctor WHERE Name= '".$doctorName."' AND Surname='".$doctorSurname."'";
-
+                        #echo $sql;
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0){
                                 $row1 = $result->fetch_assoc();
@@ -85,10 +85,32 @@
 
                         $timestamp = strtotime($_POST['date']." ".$_POST['hour']);
                         $date_formated = date('Y-m-d H:i:s', $timestamp);
-                        #echo $date_formated;
+                        #echo "\n Date Formatted ".$date_formated;
 
-                        $sql = "INSERT INTO appointment (DID, PATID, Date) VALUES (".$row1['DID'].",".$row['PatID'].",'".$date_formated."')";
+                        $sql2 = "SELECT Date FROM appointment WHERE DID = (
+                                        SELECT DID FROM doctor WHERE name = '".$doctorName."' AND Surname ='".$doctorSurname."'
+                                )";
+                        #echo $sql2;
+                        $result = $conn->query($sql2);
+                        if ($result->num_rows > 0){
+                                while ($row2 = $result->fetch_assoc()) {
+                                        $datesubstr = substr($row2['Date'], 0 , 19);
+                                        #echo "\nROW DATE ".$datesubstr;
+                                        #echo "\nPOST DATE ".$date_formated;
+                                        if($datesubstr == $date_formated){ ?>
+                                                <div class="links">
+                                                        <a>Appointment is not available at</a> <?php echo "<div class=\"links\">". $datesubstr. "</div>"; ?><br><br>
+                                                        <a href="/home.php">Continue</a>
+                                                        <a href="/logout.php">Log Out</a>
+                                                </div>
+                                                <?php
+                                                die();
+                                        }
+                                }
+                        }
 
+                        $sql = "INSERT INTO appointment (DID, PatID, Date) VALUES (".$row1['DID'].",".$row['PatID'].",'".$date_formated."')";
+                        #echo $sql;
                         if ($conn->query($sql) === TRUE) { ?>
                         <div class="links">
                             <a>New Appointment Created Successfully!</a><br><br>
@@ -96,7 +118,9 @@
                             <a href="/logout.php">Log Out</a>
                        </div>
                             <?php
-                        } else { ?>
+                        } else {
+                                echo "error= ".$conn->error;
+                                ?>
                         <div class="links">
                                 <a>ERROR!</a>
                                 <a href="/home.php">Continue</a>

@@ -52,8 +52,8 @@
                                                             text-align: center;
                                                             width:546px;
                                                             height:265px;
-                                                            margin-left: -273px; /*half width*/
-                                                            margin-top: -132px; /*half height*/">
+                                                            margin-left: -273px;
+                                                            margin-top: -200px; ">
                                                         <a>Make Appointment</a><br><br>
                                                         <form action="makeapp.php" method="post">
                                                                 Date:
@@ -89,16 +89,36 @@
                                                                                         echo '<option>'.$row['Name'].' '.$row['Surname'].' : '.$row1['BranchName'].'</option>';
                                                                                 }
                                                                         }
-
-                                                                        /*for($mins=0; $mins<60; $mins+=5)
-                                                                                echo '<option>'.str_pad($hours,2,'0',STR_PAD_LEFT).':'
-                                                                                               .str_pad($mins,2,'0',STR_PAD_LEFT).'</option>';*/
                                                                 ?>
                                                                 </select>
                                                                 <input type="submit" value="make">
                                                         </form><br>
-                                                        <a>Cancel Appointment</a><br><br>
-                                                        <a>Edit Appointment</a>
+                                                        <a>Appointments</a><br><br>
+                                                        <div style="text-align:left; margin-left:90px"
+                                                        <ul>
+                                                        <?php
+                                                                $sql = "SELECT PatID FROM patient WHERE UserName='".$_SESSION['username'].
+                                                                                "' AND Password ='".$_SESSION['password']."'";
+                                                                $result = $conn->query($sql);
+                                                                if ($result->num_rows > 0) {
+                                                                        $row3 = $result->fetch_assoc();
+                                                                        $patid = $row3['PatID'];
+                                                                        #echo $patid;
+                                                                }
+                                                                $sql = "SELECT DID, Date FROM appointment WHERE PatID='".$patid."'";
+                                                                $result = $conn->query($sql);
+                                                                if ($result->num_rows > 0){
+                                                                        while ($row2 = $result->fetch_assoc()) {
+                                                                                $datesubstr = substr($row2['Date'], 0 , 16);
+                                                                                $sql1 = "SELECT Name, Surname FROM doctor WHERE DID=".$row2['DID'];
+                                                                                $result1 = $conn->query($sql1);
+                                                                                $row4 = $result1->fetch_assoc();
+                                                                                echo '<li> Date: '.$datesubstr.'
+                                                                                        Doctor: '.$row4['Name'].' '.$row4['Surname'].'</li><br>';
+                                                                        }
+                                                                }
+                                                         ?>
+                                                         </ul>
                                         </div>
                                 <?php }
                         }else{

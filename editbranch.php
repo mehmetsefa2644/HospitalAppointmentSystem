@@ -25,7 +25,7 @@
                 .links > a {
                color: #636b6f;
                padding: 0 25px;
-               font-size: 20px;
+               font-size: 30px;
                font-weight: 600;
                letter-spacing: .1rem;
                text-decoration: none;
@@ -39,55 +39,54 @@
                    -webkit-border-radius: 5px;
                    border-radius: 5px;
                }
-</style>
+        </style>
 </head>
 <body>
         <?php if (isset($_SESSION['username'])){
-                if(!isset($_POST['fromedit'])){
+                if(isset($_POST['edit'])){ ?>
+
+                        <div class="links" style="position: absolute;
+                                            left: 50%;
+                                            top: 50%;
+                                            text-align: center;
+                                            width:546px;
+                                            height:265px;
+                                            margin-left: -273px;
+                                            margin-top: -132px; ">
+                                        <a>Edit Branch</a><br><br>
+                                        <form action="addbranch.php" method="post">
+                                                Branch Name:
+                                                <input type="text" name="branchnamefromedit">
+                                                <input type="hidden" name="oldbranch" value="<?php echo $_POST['branches']; ?>">
+                                                <input type="submit" value="edit" name="fromedit">
+                                        </form><br><br>
+                                        <div style="font-size:25px">
+                                        <a>Branch to be editted:Branch Name: <?php echo $_POST['branches']; ?> </a>
+                                        </div>
+
+                <?php
+                }elseif(isset($_POST['remove'])){
+
                         $dbname = "hospital";
                         $server = "localhost";
                         $dbusername = "root";
                         $dbpass = "";
                         $conn = new mysqli($server, $dbusername, $dbpass, $dbname);
 
-                        $sql = "INSERT INTO brach (BranchName) VALUES ('".$_POST['branchname']."')";
+                        $sql = "DELETE FROM brach WHERE BranchName='".$_POST['branches']."'";
 
                         if($conn->query($sql) === TRUE){
                                 ?>
                         <div class="links">
-                            <a>Branch Added Successfully!</a><br><br>
+                            <a>Branch Removed Successfully!</a><br><br>
                             <a href="/home.php">Continue</a>
                             <a href="/logout.php">Log Out</a>
                        </div>
                             <?php
-                    }else{
-                            echo $conn->error;
-                    }
-                }else{
-                        $dbname = "hospital";
-                        $server = "localhost";
-                        $dbusername = "root";
-                        $dbpass = "";
-                        $conn = new mysqli($server, $dbusername, $dbpass, $dbname);
-
-                        $sql = "DELETE FROM brach WHERE BranchName='".$_POST['oldbranch']."'";
-
-                        $conn->query($sql);
-
-                        $sql = "INSERT INTO brach (BranchName) VALUES ('".$_POST['branchnamefromedit']."')";
-
-                        if($conn->query($sql) === TRUE){
-                                ?>
-                        <div class="links">
-                            <a>Branch Editted Successfully!</a><br><br>
-                            <a href="/home.php">Continue</a>
-                            <a href="/logout.php">Log Out</a>
-                       </div>
-                            <?php
+                        }
                 }
-                }
-        }else {
+        }else{
                 echo "Please <a href='/login.php'>login</a> first!";
-        } ?>
+        }  ?>
 </body>
 </html>

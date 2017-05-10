@@ -131,7 +131,7 @@
                                 }else { ?>
 
                                         <div style="text-align:center">
-                                        <h3>Welcome admin <?php echo $_SESSION['username'] ?> </h3><a href="/logout.php">Logout</a>
+                                        <h3>Welcome administrator <?php echo $_SESSION['username'] ?> </h3><a href="/logout.php">Logout</a>
                                         </div>
                                         <div class="links" style="position: absolute;
                                                             left: 50%;
@@ -152,7 +152,7 @@
                                                                 Doctor Name:
                                                                 <input type="text" name="doctorname">
                                                                 Surname:
-                                                                <input type="text" name="doctorname"><br><br>
+                                                                <input type="text" name="doctorsurname"><br><br>
                                                                 Branch:
                                                                 <select style="width:85px;" name="branchname">
                                                                 <?php
@@ -203,7 +203,7 @@
                                                                 ?>
                                                                 </select>
                                                                 <input type="submit" value="Edit" name="edit">
-                                                                <input type="submit" value="Cancel" name="cancel">
+                                                                <input type="submit" value="Remove" name="remove">
                                                         </form><br><br>
                                                         <a>Doctors</a><br><br>
                                                         <form action="/editdoctor.php" method="POST">
@@ -233,7 +233,7 @@
                                                                 ?>
                                                                 </select>
                                                                 <input type="submit" value="Edit" name="edit">
-                                                                <input type="submit" value="Cancel" name="cancel">
+                                                                <input type="submit" value="Remove" name="remove">
                                                         </form><br><br>
                                 </div>
                                 <?php }

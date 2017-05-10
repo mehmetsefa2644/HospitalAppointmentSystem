@@ -128,10 +128,114 @@
                         }else{
                                 if(!isset($_SESSION['username'])){
                                         echo "Please <a href='/login.php'>login</a> first!";
-                                }else {?>
-                                        <a href="/logout.php">Logout</a><br>
-                                        <h3>Welcome admin <?php echo $_SESSION['username'] ?> </h3>
-                                        <h2>HOME</h2>
+                                }else { ?>
+
+                                        <div style="text-align:center">
+                                        <h3>Welcome admin <?php echo $_SESSION['username'] ?> </h3><a href="/logout.php">Logout</a>
+                                        </div>
+                                        <div class="links" style="position: absolute;
+                                                            left: 50%;
+                                                            top: 50%;
+                                                            text-align: center;
+                                                            width:546px;
+                                                            height:265px;
+                                                            margin-left: -273px;
+                                                            margin-top: -220px; ">
+                                                        <a>Add Branch</a><br><br>
+                                                        <form action="addbranch.php" method="post">
+                                                                Branch Name:
+                                                                <input type="text" name="branchname">
+                                                                <input type="submit" value="add">
+                                                        </form><br><br>
+                                                        <a>Add Doctor</a><br><br>
+                                                        <form action="adddoctor.php" method="post">
+                                                                Doctor Name:
+                                                                <input type="text" name="doctorname">
+                                                                Surname:
+                                                                <input type="text" name="doctorname"><br><br>
+                                                                Branch:
+                                                                <select style="width:85px;" name="branchname">
+                                                                <?php
+                                                                        $dbname = "hospital";
+                                                                        $server = "localhost";
+                                                                        $dbusername = "root";
+                                                                        $dbpass = "";
+                                                                        $conn = new mysqli($server, $dbusername, $dbpass, $dbname);
+
+                                                                        if ($conn->connect_error){
+                                                                                die("Connection Failed!");
+                                                                        }
+
+                                                                        $sql = "SELECT BranchName FROM brach";
+
+                                                                        $result = $conn->query($sql);
+                                                                        if ($result->num_rows > 0){
+                                                                                while ($row6 = $result->fetch_assoc()) {
+                                                                                        echo '<option>'.$row6['BranchName'].'</option>';
+                                                                                }
+                                                                        }
+                                                                ?>
+                                                                </select>
+                                                                <input type="submit" value="add">
+                                                        </form><br><br>
+                                                        <a>Branches</a><br><br>
+                                                        <form action="/editbranch.php" method="POST">
+                                                                <select style="width:85px;" name="branches">
+                                                                <?php
+                                                                        $dbname = "hospital";
+                                                                        $server = "localhost";
+                                                                        $dbusername = "root";
+                                                                        $dbpass = "";
+                                                                        $conn = new mysqli($server, $dbusername, $dbpass, $dbname);
+
+                                                                        if ($conn->connect_error){
+                                                                                die("Connection Failed!");
+                                                                        }
+
+                                                                        $sql = "SELECT BranchName FROM brach";
+
+                                                                        $result = $conn->query($sql);
+                                                                        if ($result->num_rows > 0){
+                                                                                while ($row6 = $result->fetch_assoc()) {
+                                                                                        echo '<option>'.$row6['BranchName'].'</option>';
+                                                                                }
+                                                                        }
+                                                                ?>
+                                                                </select>
+                                                                <input type="submit" value="Edit" name="edit">
+                                                                <input type="submit" value="Cancel" name="cancel">
+                                                        </form><br><br>
+                                                        <a>Doctors</a><br><br>
+                                                        <form action="/editdoctor.php" method="POST">
+                                                                <select style="width:85px;" name="doctors">
+                                                                <?php
+                                                                        $dbname = "hospital";
+                                                                        $server = "localhost";
+                                                                        $dbusername = "root";
+                                                                        $dbpass = "";
+                                                                        $conn = new mysqli($server, $dbusername, $dbpass, $dbname);
+
+                                                                        if ($conn->connect_error){
+                                                                                die("Connection Failed!");
+                                                                        }
+
+                                                                        $sql = "SELECT Name, Surname, BranchID FROM doctor";
+
+                                                                        $result = $conn->query($sql);
+                                                                        if ($result->num_rows > 0){
+                                                                                while ($row7 = $result->fetch_assoc()) {
+                                                                                        $sql1 = "SELECT BranchName FROM brach WHERE BranchID=".$row7['BranchID'];
+                                                                                        $result1 = $conn->query($sql1);
+                                                                                        $row10 = $result1->fetch_assoc();
+                                                                                        echo '<option>'.$row7['Name'].' '.$row7['Surname'].' : '.$row10['BranchName'].'</option>';
+                                                                                }
+                                                                        }
+                                                                ?>
+                                                                </select>
+                                                                <input type="submit" value="Edit" name="edit">
+                                                                <input type="submit" value="Cancel" name="cancel">
+                                                        </form><br><br>
+                                </div>
                                 <?php }
                         }
                 }else{

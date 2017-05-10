@@ -53,7 +53,7 @@
                                                             width:546px;
                                                             height:265px;
                                                             margin-left: -273px;
-                                                            margin-top: -200px; ">
+                                                            margin-top: -132px; ">
                                                         <a>Make Appointment</a><br><br>
                                                         <form action="makeapp.php" method="post">
                                                                 Date:
@@ -92,10 +92,11 @@
                                                                 ?>
                                                                 </select>
                                                                 <input type="submit" value="make">
-                                                        </form><br>
+                                                        </form><br><br>
                                                         <a>Appointments</a><br><br>
-                                                        <div style="text-align:left; margin-left:90px"
-                                                        <ul>
+                                                        <div style="text-align:left; margin-left:90px">
+                                                        <form action="/editapp.php" method="POST">
+                                                        <select name="appointment">
                                                         <?php
                                                                 $sql = "SELECT PatID FROM patient WHERE UserName='".$_SESSION['username'].
                                                                                 "' AND Password ='".$_SESSION['password']."'";
@@ -113,12 +114,15 @@
                                                                                 $sql1 = "SELECT Name, Surname FROM doctor WHERE DID=".$row2['DID'];
                                                                                 $result1 = $conn->query($sql1);
                                                                                 $row4 = $result1->fetch_assoc();
-                                                                                echo '<li> Date: '.$datesubstr.'
-                                                                                        Doctor: '.$row4['Name'].' '.$row4['Surname'].'</li><br>';
+                                                                                echo '<option > Date: '.$datesubstr.'
+                                                                                        Doctor: '.$row4['Name'].' '.$row4['Surname'].'</option>';
                                                                         }
                                                                 }
                                                          ?>
-                                                         </ul>
+                                                        </select>
+                                                        <input type="submit" value="Edit" name="edit">
+                                                        <input type="submit" value="Cancel" name="cancel">
+                                                        </form>
                                         </div>
                                 <?php }
                         }else{

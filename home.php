@@ -60,7 +60,7 @@
                                                                 <input type="date" name="date">
                                                                 Time:
                                                                 <select style="width:85px;" name="hour">
-                                                                <?php for($hours=0; $hours<24; $hours++) // the interval for hours is '1'
+                                                                <?php for($hours=8; $hours<17; $hours++) // the interval for hours is '1'
                                                                     for($mins=0; $mins<60; $mins+=5) // the interval for mins is '5'
                                                                         echo '<option>'.str_pad($hours,2,'0',STR_PAD_LEFT).':'
                                                                                        .str_pad($mins,2,'0',STR_PAD_LEFT).'</option>';?>

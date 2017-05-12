@@ -70,13 +70,12 @@
                         $dbpass = "";
                         $conn = new mysqli($server, $dbusername, $dbpass, $dbname);
 
-                        $sql = "DELETE FROM brach WHERE BranchName='".$_POST['oldbranch']."'";
-
-                        $conn->query($sql);
-
                         $sql = "INSERT INTO brach (BranchName) VALUES ('".$_POST['branchnamefromedit']."')";
 
                         if($conn->query($sql) === TRUE){
+                                $sql = "DELETE FROM brach WHERE BranchName='".$_POST['oldbranch']."'";
+
+                                $conn->query($sql);
                                 ?>
                         <div class="links">
                             <a>Branch Editted Successfully!</a><br><br>

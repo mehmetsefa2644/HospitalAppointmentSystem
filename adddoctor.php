@@ -43,33 +43,65 @@
 </head>
 <body>
         <?php if (isset($_SESSION['username'])){
-                $dbname = "hospital";
-                $server = "localhost";
-                $dbusername = "root";
-                $dbpass = "";
-                $conn = new mysqli($server, $dbusername, $dbpass, $dbname);
+                if(!isset($_POST['fromedit'])){
+                        $dbname = "hospital";
+                        $server = "localhost";
+                        $dbusername = "root";
+                        $dbpass = "";
+                        $conn = new mysqli($server, $dbusername, $dbpass, $dbname);
 
-                $sql = "SELECT BranchID FROM brach WHERE BranchName='".$_POST['branchname']."'";
+                        $sql = "SELECT BranchID FROM brach WHERE BranchName='".$_POST['branchname']."'";
 
-                $result = $conn->query($sql);
-                if($result->num_rows > 0){
-                        $row = $result->fetch_assoc();
-                        $branchid = $row['BranchID'];
-                }
+                        $result = $conn->query($sql);
+                        if($result->num_rows > 0){
+                                $row = $result->fetch_assoc();
+                                $branchid = $row['BranchID'];
+                        }
 
-                $sql = "INSERT INTO doctor (Name, Surname, BranchID) VALUES ('".$_POST['doctorname']."','".$_POST['doctorsurname']."','".$branchid."')";
+                        $sql = "INSERT INTO doctor (Name, Surname, BranchID) VALUES ('".$_POST['doctorname']."','".$_POST['doctorsurname']."','".$branchid."')";
 
-                if($conn->query($sql) === TRUE){
-                        ?>
-                <div class="links">
-                    <a>Doctor Added Successfully!</a><br><br>
-                    <a href="/home.php">Continue</a>
-                    <a href="/logout.php">Log Out</a>
-               </div>
-                    <?php
-            }else{
-                    echo $conn->error;
-            }
+                        if($conn->query($sql) === TRUE){
+                                ?>
+                        <div class="links">
+                            <a>Doctor Added Successfully!</a><br><br>
+                            <a href="/home.php">Continue</a>
+                            <a href="/logout.php">Log Out</a>
+                       </div>
+                            <?php
+                       }else{
+                            echo $conn->error;
+                       }
+               }else{
+                       $dbname = "hospital";
+                       $server = "localhost";
+                       $dbusername = "root";
+                       $dbpass = "";
+                       $conn = new mysqli($server, $dbusername, $dbpass, $dbname);
+
+                       $sql = "DELETE FROM doctor WHERE Name='".$_POST['olddoctorname']."' AND Surname='".$_POST['olddoctorsurname']."'";
+                       $conn->query($sql);
+                       $sql = "SELECT BranchID FROM brach WHERE BranchName='".$_POST['doctorbranchfromedit']."'";
+
+                       $result = $conn->query($sql);
+                       if($result->num_rows > 0){
+                               $row = $result->fetch_assoc();
+                               $branchid = $row['BranchID'];
+                       }
+
+                       $sql = "INSERT INTO doctor (Name, Surname, BranchID) VALUES ('".$_POST['doctornamefromedit']."','".$_POST['doctorsurnamefromedit']."','".$branchid."')";
+
+                       if($conn->query($sql) === TRUE){
+                               ?>
+                       <div class="links">
+                           <a>Doctor Editted Successfully!</a><br><br>
+                           <a href="/home.php">Continue</a>
+                           <a href="/logout.php">Log Out</a>
+                      </div>
+                           <?php
+                      }else{
+                           echo $conn->error;
+                      }
+               }
         }else {
                 echo "Please <a href='/login.php'>login</a> first!";
         } ?>
